@@ -42,13 +42,3 @@ class CustomUserInfoSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'email', 'nickname', 'location', 'seller']
     
-"""
-    def update(self, instance, validated_data):
-        instance.username = validated_data.get('username', instance.username)
-        instance.email = validated_data.get('email', instance.email)
-        instance.nickname = validated_data.get('nickname', instance.nickname)
-        instance.location = validated_data.get('location', instance.location)
-        instance.seller = validated_data.get('seller', instance.seller)
-        instance.save()
-        return instance
-"""
