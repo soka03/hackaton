@@ -10,7 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
     location = serializers.CharField(source='user.location', read_only=True)
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = '__all__'
     def get_created_at(self, obj):
         time = timezone.localtime(obj.created_at)
         return time.strftime('%Y-%m-%d %H:%M')
