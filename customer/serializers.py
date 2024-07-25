@@ -5,6 +5,7 @@ from .models import Order
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
     nickname = serializers.ReadOnlyField(source='post.user.nickname')
+    phonenumber = serializers.ReadOnlyField(source='post.user.phonenumber')
     product = serializers.ReadOnlyField(source='post.product')
     price = serializers.ReadOnlyField(source='post.price')
     order_date = serializers.SerializerMethodField()
