@@ -18,17 +18,6 @@ class GetInfo(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-"""
-    def patch(self, request):
-        user = request.user
-        self.check_object_permissions(self.request, user)
-        serializer = CustomUserInfoSerializer(user, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-"""
 
 class UpdateUser(APIView):
     def patch(self, request, user_id):
@@ -40,6 +29,7 @@ class UpdateUser(APIView):
 
         username = request.data.get('username')
         nickname = request.data.get('nickname')
+        phonenumber = request.data.get('phonenumber')
         location = request.data.get('location')
         seller = request.data.get('seller')
 
@@ -47,6 +37,8 @@ class UpdateUser(APIView):
             user.username = username
         if nickname is not None:
             user.nickname = nickname
+        if phonenumber is not None:
+            user.phonenumber = phonenumber
         if location is not None:
             user.location = location
         if seller is not None:
