@@ -17,11 +17,19 @@ class CreateOrderView(APIView):
     def post(self, request, post_id): #주문 작성
         post = get_object_or_404(Post, id=post_id)
         order = request.data.get('order', None)
-        location = request.data.get('location', None)
+        city = request.data.get('city', None)
+        district = request.data.get('district', None)
+        dong = request.data.get('dong', None)
+        detail_location = request.data.get('detail_location', None)
+        body = request.data.get('body', "")
         data = {
             'post': post.id,
             'order': order,
-            'location': location
+            'city': city,
+            'district': district,
+            'dong': dong,
+            'detail_location' : detail_location,
+            'body': body
         }
         serializer = OrderSerializer(data=data)
         if serializer.is_valid():
@@ -49,7 +57,7 @@ class DeleteOrderView(APIView): #주문 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def get_boards_by_location(request, location): #지역별 판매글 목록 조회
-    posts = Post.objects.filter(user__location=location)
+def get_boards_by_location(request, district): #지역별 판매글 목록 조회
+    posts = Post.objects.filter(user__district=district)
     serializer = PostSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

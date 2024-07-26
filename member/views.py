@@ -29,18 +29,26 @@ class UpdateUser(APIView):
 
         username = request.data.get('username')
         nickname = request.data.get('nickname')
-        phonenumber = request.data.get('phonenumber')
-        location = request.data.get('location')
+        phone_number = request.data.get('phone_number')
+        city = request.data.get('city')
+        district = request.data.get('district')
+        dong = request.data.get('dong')
+        detail_location = request.data.get('detail_location')
         seller = request.data.get('seller')
 
         if username is not None:
             user.username = username
         if nickname is not None:
             user.nickname = nickname
-        if phonenumber is not None:
-            user.phonenumber = phonenumber
-        if location is not None:
-            user.location = location
+        if phone_number is not None:
+            user.phone_number = phone_number
+        if city is not None:
+            user.city = city
+        if district is not None:
+            user.district = district
+        if detail_location is not None:
+            user.detail_location = detail_location
+
         if seller is not None:
             user.seller = seller
 

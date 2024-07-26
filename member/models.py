@@ -6,7 +6,6 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = []
     email = None
     nickname = models.CharField(max_length=100)
-    phonenumber = models.CharField(max_length=20)
     """
     LOCATION_CHOICES = [
         ('강남구', '강남구'),
@@ -33,17 +32,16 @@ class CustomUser(AbstractUser):
         ('은평구', '은평구'),
         ('종로구', '종로구'),
         ('중구', '중구'),
-        ('중랄구', '중랄구'),
+        ('중랑구', '중랑구'),
     ]
     location = models.CharField(max_length=200, default="", choices=LOCATION_CHOICES)
     """
+    city = models.CharField(max_length=100, default="")
+    district = models.CharField(max_length=100, default="")
+    dong = models.CharField(max_length=100, default="")
+    detail_location = models.CharField(max_length=100, default="")
+    phone_number = models.CharField(max_length=11, default="")
 
-    #postalcode = models.CharField(max_length=10)
-    location = models.CharField(max_length=200) #주소
-    #location_ = models.CharField(max_length=100) #참고
-    #address = models.CharField(max_length=200) #상세주소
-    district = models.CharField(max_length=50, blank=True, null=True)  #구정보 저장필드
-    
     SELLER_CHOICES = [
         ('판매자', '판매자'),
         ('구매자', '구매자'),
