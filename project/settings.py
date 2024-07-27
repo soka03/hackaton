@@ -30,6 +30,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['100.28.110.253', 'ourvege.store', '127.0.0.1']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://ourvege.store',
+]
+
+
 # Application definition
 
 INSTALLED_APPS = [
