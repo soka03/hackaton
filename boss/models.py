@@ -11,3 +11,4 @@ class Post(models.Model):
     price = models.IntegerField()
     body = models.TextField(default='')
     created_at = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)

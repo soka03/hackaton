@@ -229,3 +229,6 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'images'
