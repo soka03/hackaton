@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
 class CustomUser(AbstractUser):
-    REQUIRED_FIELDS = []
-    email = None
+    email = models.EmailField(unique=True, blank=True, null=True)  # email 필드를 추가하고 필수 항목에서 제외
+
     nickname = models.CharField(max_length=100)
     """
     LOCATION_CHOICES = [
@@ -47,3 +47,10 @@ class CustomUser(AbstractUser):
         ('구매자', '구매자'),
     ]
     seller = models.CharField(max_length=200, default="", choices=SELLER_CHOICES)
+    
+    REQUIRED_FIELDS = ['nickname']  # email을 제외한 필수 필드 목록
+
+    def __str__(self):
+        return self.username
+    
+
