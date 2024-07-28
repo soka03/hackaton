@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from .models import Order
+from rest_framework.decorators import api_view, permission_classes
+from .models import *
 from .serializers import OrderSerializer
 from boss.models import *
 from member.models import CustomUser
@@ -60,4 +61,34 @@ class DeleteOrderView(APIView): #주문 삭제
 def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
     posts = Post.objects.filter(user__dong=dong)
     serializer = PostSerializer(posts, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+from .serializers import ReviewSerializer
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def write_review(request, order_id):
+    try:
+        order = Order.objects.get(id=order_id, customer=request.user)
+    except Order.DoesNotExist:
+        return Response({'error': 'Order not found or not yours'}, status=status.HTTP_404_NOT_FOUND)
+    
+    if Review.objects.filter(order=order).exists():
+        return Response({'error': 'Review already exists for this order'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    serializer = ReviewSerializer(data=request.data, context={'request': request})
+    if serializer.is_valid():
+        serializer.save(order=order)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_review_list(request):
+    user = request.user
+    reviews = Review.objects.filter(customer=user)
+    serializer = ReviewSerializer(reviews, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)

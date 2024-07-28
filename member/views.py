@@ -6,6 +6,41 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+class Login(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        username = request.data['username']
+        password = request.data['password']
+        seller = request.data['seller']
+
+        user = CustomUser.objects.get(username=username, seller=seller)
+
+        if user is None:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        if not user.check_password(password):
+            print(user.check_password(password))
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        if user is not None:
+            token = TokenObtainPairSerializer.get_token(user)
+            refresh_token = str(token)
+            access_token = str(token.access_token)
+
+            response = Response({
+                "access" : access_token,
+                "refresh" : refresh_token,
+                "user" : CustomUserDetailSerializer(user).data
+            }, status=status.HTTP_200_OK)
+            return response
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 class GetInfo(APIView):
     authentication_classes = [JWTAuthentication]

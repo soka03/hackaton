@@ -8,4 +8,7 @@ urlpatterns = [
     path('order/<int:order_id>/', OrderDetailView.as_view()),
     path('order/<int:order_id>/delete/', DeleteOrderView.as_view()),
     path('<str:dong>/', get_boards_by_location),
+    path('order/<int:order_id>/review/', write_review),
+    path('reviews/mine/', user_review_list),
+
 ]
