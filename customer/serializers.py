@@ -26,25 +26,4 @@ class PostInfoSerializer(serializers.ModelSerializer):
         fields = ['id', 'product', 'price', 'user']
 
 
-class ReviewSerializer(serializers.ModelSerializer):
-    order_id = serializers.IntegerField(write_only=True, required=False)
-    post = PostInfoSerializer(source='order.post', read_only=True)
 
-    class Meta:
-        model = Review
-        fields = ['id', 'order_id', 'post','customer', 'content', 'rating', 'created_at']
-        read_only_fields = ['customer', 'created_at']
-
-    def create(self, validated_data):
-        request = self.context.get('request')
-        validated_data['customer'] = request.user
-        order_id = validated_data.pop('order_id', None)
-        if order_id:
-            order = Order.objects.get(id=order_id, customer=request.user)
-        else:
-            order = Order.objects.filter(customer=request.user).first()
-
-        validated_data['order'] = order
-
-        return super().create(validated_data)
-    

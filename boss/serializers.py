@@ -12,7 +12,6 @@ class PostSerializer(serializers.ModelSerializer):
     district = serializers.CharField(source='user.district', read_only=True)
     dong = serializers.CharField(source='user.dong', read_only=True)
     detail_location = serializers.CharField(source='user.detail_location', read_only=True)
-    reviews = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -22,10 +21,6 @@ class PostSerializer(serializers.ModelSerializer):
         time = timezone.localtime(obj.created_at)
         return time.strftime('%Y-%m-%d %H:%M')
 
-    def get_reviews(self, obj):
-        orders = obj.orders.all()
-        reviews = [order.review for order in orders if hasattr(order, 'review')]
-        return ReviewSerializer(reviews, many=True).data
     
 class OrderCheckSerializer(serializers.ModelSerializer):
     created_at = serializers.SerializerMethodField()
