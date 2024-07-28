@@ -10,4 +10,9 @@ class Order(models.Model):
     order_date = models.DateTimeField(auto_now_add=True)
 
 
-
+class Review(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='review')
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    rating = models.IntegerField()
+    comment = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)

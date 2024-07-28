@@ -64,4 +64,56 @@ def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class CreateReviewView(APIView): # 리뷰 작성
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
+    def post(self, request, order_id):
+        order = get_object_or_404(Order, id=order_id)
+        if order.customer != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        if hasattr(order, 'review'):
+            return Response({'detail': 'This order already has a review.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        data = {
+            'order': order.id,  # order ID를 전달합니다.
+            'rating': request.data.get('rating'),
+            'comment': request.data.get('comment')
+        }
+        
+        serializer = ReviewSerializer(data=data, context={'request': request})  # context에 request를 추가합니다.
+        if serializer.is_valid():
+            review = serializer.save()
+            return Response(ReviewSerializer(review).data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ReviewDetailView(APIView): # 리뷰 조회, 수정, 삭제
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, review_id):
+        review = get_object_or_404(Review, id=review_id)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, review_id):
+        review = get_object_or_404(Review, id=review_id)
+        if review.customer != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        data = {
+            'rating': request.data.get('rating', review.rating),
+            'comment': request.data.get('comment', review.comment)
+        }
+        serializer = ReviewSerializer(review, data=data, partial=True)
+        if serializer.is_valid():
+            updated_review = serializer.save()
+            return Response(ReviewSerializer(updated_review).data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, review_id):
+        review = get_object_or_404(Review, id=review_id)
+        if review.customer != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        review.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
