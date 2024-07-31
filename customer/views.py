@@ -56,11 +56,27 @@ class DeleteOrderView(APIView): #주문 삭제
             return Response(status=status.HTTP_403_FORBIDDEN)
         order.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+"""
 @api_view(['GET'])
 def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
     posts = Post.objects.filter(user__dong=dong)
     serializer = PostSearchSerializer(posts, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
+"""
+
+@api_view(['GET'])
+def get_boards_by_location(request, dong):
+    posts = Post.objects.filter(user__dong=dong)
+    
+    latest_posts = {}
+    for post in posts:
+        user_id = post.user.id
+        if user_id not in latest_posts or post.created_at > latest_posts[user_id].created_at:
+            latest_posts[user_id] = post
+    
+    latest_posts_list = list(latest_posts.values())
+
+    serializer = PostSearchSerializer(latest_posts_list, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
