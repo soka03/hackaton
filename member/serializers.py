@@ -54,7 +54,7 @@ class CustomUserDetailSerializer(serializers.ModelSerializer):
 class CustomUserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'email', 'phone_number' 'nickname', 'city', 'district', 'dong', 'detail_location', 'seller']
+        fields = ['id', 'username', 'email', 'phone_number', 'nickname', 'city', 'district', 'dong', 'detail_location', 'seller']
     
 """
     def update(self, instance, validated_data):

@@ -45,14 +45,17 @@ class Login(APIView):
 class GetInfo(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsOwnerOrReadOnly]
+
     def get(self, request):
         try:
             user = request.user
             self.check_object_permissions(self.request, user)
             serializer = CustomUserInfoSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        except:
+        except Exception as e:
+            print(f"Error: {e}")
             return Response(status=status.HTTP_404_NOT_FOUND)
+
 
 class UpdateUser(APIView):
     def patch(self, request, user_id):
