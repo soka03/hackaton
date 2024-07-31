@@ -60,7 +60,7 @@ class DeleteOrderView(APIView): #주문 삭제
 @api_view(['GET'])
 def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
     posts = Post.objects.filter(user__dong=dong)
-    serializer = PostSerializer(posts, many=True)
+    serializer = PostSearchSerializer(posts, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -117,3 +117,10 @@ class ReviewDetailView(APIView): # 리뷰 조회, 수정, 삭제
             return Response(status=status.HTTP_403_FORBIDDEN)
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class GetPostsByUser(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request, user_id):
+        posts = Post.objects.filter(user_id=user_id)
+        serializer = PostSerializer(posts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
