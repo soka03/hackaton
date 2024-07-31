@@ -135,7 +135,6 @@ class ReviewDetailView(APIView): # 리뷰 조회, 수정, 삭제
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class GetPostsByUser(APIView):
-    permission_classes = [IsAuthenticated]
     def get(self, request, user_id):
         posts = Post.objects.filter(user_id=user_id)
         serializer = PostSerializer(posts, many=True)
