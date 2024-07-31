@@ -76,12 +76,12 @@ class CreateReviewView(APIView): # 리뷰 작성
             return Response({'detail': 'This order already has a review.'}, status=status.HTTP_400_BAD_REQUEST)
         
         data = {
-            'order': order.id,  # order ID를 전달합니다.
+            'order': order.id, 
             'rating': request.data.get('rating'),
             'comment': request.data.get('comment')
         }
         
-        serializer = ReviewSerializer(data=data, context={'request': request})  # context에 request를 추가합니다.
+        serializer = ReviewSerializer(data=data, context={'request': request}) 
         if serializer.is_valid():
             review = serializer.save()
             return Response(ReviewSerializer(review).data, status=status.HTTP_201_CREATED)

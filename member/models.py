@@ -48,7 +48,7 @@ class CustomUser(AbstractUser):
     ]
     seller = models.CharField(max_length=200, default="", choices=SELLER_CHOICES)
     
-    REQUIRED_FIELDS = ['nickname']  # email을 제외한 필수 필드 목록
+    REQUIRED_FIELDS = ['nickname']
 
     def __str__(self):
         return self.username
