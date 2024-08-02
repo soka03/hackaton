@@ -3,6 +3,7 @@ from .models import *
 from boss.models import Post
 
 
+
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
     nickname = serializers.ReadOnlyField(source='post.user.nickname')
@@ -11,14 +12,12 @@ class OrderSerializer(serializers.ModelSerializer):
     city = serializers.CharField(source='customer.city', read_only=True)
     district = serializers.CharField(source='customer.district', read_only=True)
     dong = serializers.CharField(source='customer.dong', read_only=True)
-    detail_location = serializers.CharField(source='customer.detail_location', read_only=True)
-    order_date = serializers.DateTimeField(format = '%Y-%m-%d %H:%M', read_only = True)
-
+    order_date = serializers.DateTimeField(format='%Y-%m-%d %H:%M', read_only=True)
     
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'nickname', 'city', 'district', 'dong', 'detail_location', 'body', 'product', 'order', 'price', 'order_date']
-        
+        fields = ['id', 'customer', 'nickname', 'city', 'district', 'dong', 'pickup_time', 'body', 'product', 'order', 'price', 'order_date']
+
         
 class PostInfoSerializer(serializers.ModelSerializer):
     class Meta:

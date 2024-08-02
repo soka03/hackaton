@@ -7,6 +7,7 @@ class Order(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='orders')
     order = models.IntegerField()
     body = models.TextField(default='')
+    pickup_time = models.TextField(default='')
     order_date = models.DateTimeField(auto_now_add=True)
 
 

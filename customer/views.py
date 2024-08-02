@@ -21,7 +21,7 @@ class CreateOrderView(APIView):
         city = request.data.get('city', None)
         district = request.data.get('district', None)
         dong = request.data.get('dong', None)
-        detail_location = request.data.get('detail_location', None)
+        pickup_time = request.data.get('pickup_time', None)
         body = request.data.get('body', "")
         data = {
             'post': post.id,
@@ -29,7 +29,7 @@ class CreateOrderView(APIView):
             'city': city,
             'district': district,
             'dong': dong,
-            'detail_location' : detail_location,
+            'pickup_time' : pickup_time,
             'body': body
         }
         serializer = OrderSerializer(data=data)
