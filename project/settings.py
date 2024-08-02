@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'corsheaders',
 ]
 
-CORS_ALLOW_ALL_ORGINS = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_ALL_HEADERS = True
 
