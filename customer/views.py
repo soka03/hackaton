@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from rest_framework import status
@@ -139,3 +139,14 @@ class GetPostsByUser(APIView):
         posts = Post.objects.filter(user_id=user_id)
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class SellerReviewListView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request, user_id, *args, **kwargs):
+        posts = Post.objects.filter(user_id=user_id)
+        orders = Order.objects.filter(post__in=posts)
+        reviews = Review.objects.filter(order__in=orders)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data)

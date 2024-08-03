@@ -11,4 +11,5 @@ urlpatterns = [
     path('order/<int:order_id>/review/', CreateReviewView.as_view()),
     path('review/<int:review_id>/', ReviewDetailView.as_view()),
     path('seller/<int:user_id>/', GetPostsByUser.as_view()),
+    path('seller/<int:user_id>/reviews/', SellerReviewListView.as_view()),
 ]
