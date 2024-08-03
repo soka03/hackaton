@@ -8,38 +8,36 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class Login(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [AllowAny]
 
     def post(self, request):
-        username = request.data['username']
-        password = request.data['password']
-        seller = request.data['seller']
+        username = request.data.get('username')
+        password = request.data.get('password')
+        seller = request.data.get('seller')
 
-        user = CustomUser.objects.get(username=username, seller=seller)
+        try:
+            user = CustomUser.objects.get(username=username, seller=seller)
+        except ObjectDoesNotExist:
+            return Response({"error": "Invalid username or seller"}, status=status.HTTP_400_BAD_REQUEST)
 
-        if user is None:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        
         if not user.check_password(password):
-            print(user.check_password(password))
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        
-        if user is not None:
-            token = TokenObtainPairSerializer.get_token(user)
-            refresh_token = str(token)
-            access_token = str(token.access_token)
+            return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
 
-            response = Response({
-                "access" : access_token,
-                "refresh" : refresh_token,
-                "user" : CustomUserDetailSerializer(user).data
-            }, status=status.HTTP_200_OK)
-            return response
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        token = TokenObtainPairSerializer.get_token(user)
+        refresh_token = str(token)
+        access_token = str(token.access_token)
+
+        response = Response({
+            "access": access_token,
+            "refresh": refresh_token,
+            "user": CustomUserDetailSerializer(user).data
+        }, status=status.HTTP_200_OK)
+        return response
 
 
 class GetInfo(APIView):
