@@ -22,8 +22,8 @@ services:
       - /home/ubuntu/hackaton/images:/home/ubuntu/hackaton/images # 이미지 파일 디렉토리를 마운트
     restart: always
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "8443:443"
     depends_on:
       - web
     networks:
