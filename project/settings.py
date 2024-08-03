@@ -76,7 +76,7 @@ CORS_ORIGIN_WHITELIST =[
 ]
 
 
-CORS_ALLOW_ALL_HEADERS = [
+CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
