@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
 ]
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -73,6 +74,14 @@ CORS_ALLOW_METHODS = [
     'HEAD',
 ]
 
+CORS_EXPOSE_HEADERS = [
+    'Content-Type',
+    'X-CSRFToken',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://ourvege.store',
+]
 
 SITE_ID = 1
 
@@ -89,7 +98,6 @@ MIDDLEWARE = [
 ]
 
 
-CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'project.urls'
 
