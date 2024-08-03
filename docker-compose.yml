@@ -20,6 +20,7 @@ services:
       - ./cert/certbot/conf:/etc/letsencrypt
       - ./cert/certbot/www:/var/www/certbot
       - /home/ubuntu/hackaton/images:/home/ubuntu/hackaton/images # 이미지 파일 디렉토리를 마운트
+      - ./staticfiles:/app/staticfiles 
     restart: always
     ports:
       - "80:80"
