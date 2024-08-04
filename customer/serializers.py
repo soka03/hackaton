@@ -6,6 +6,7 @@ from boss.models import Post
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(read_only=True)
+    customer_nickname = serializers.CharField(source='customer.nickname', read_only=True)
     nickname = serializers.ReadOnlyField(source='post.user.nickname')
     product = serializers.ReadOnlyField(source='post.product')
     price = serializers.ReadOnlyField(source='post.price')
@@ -16,7 +17,7 @@ class OrderSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Order
-        fields = ['id', 'customer', 'nickname', 'city', 'district', 'dong', 'pickup_time', 'body', 'product', 'order', 'price', 'order_date']
+        fields = ['id', 'customer', 'customer_nickname','nickname', 'city', 'district', 'dong', 'pickup_time', 'body', 'product', 'order', 'price', 'order_date']
 
         
 class PostInfoSerializer(serializers.ModelSerializer):
