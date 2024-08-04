@@ -80,11 +80,7 @@ class GetOrdersByUser(APIView):
 
     def get(self, request):
         user = request.user
-        print(f"Authenticated user: {user}")  # 추가된 디버깅 코드
-
         orders = Order.objects.filter(customer=user)
-        print(f"Orders: {orders}")  # 추가된 디버깅 코드
-
         serializer = OrderSerializer(orders, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

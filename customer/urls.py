@@ -13,6 +13,6 @@ urlpatterns = [
     path('review/<int:review_id>/', ReviewDetailView.as_view()),
     path('seller/<int:user_id>/', GetPostsByUser.as_view()),
     path('seller/<int:user_id>/reviews/', SellerReviewListView.as_view()),
-    path('order/', GetOrdersByUser.as_view()),
+    path('order/list/', GetOrdersByUser.as_view()),
 
 ]
