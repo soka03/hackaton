@@ -60,13 +60,10 @@ class DeleteOrderView(APIView): #주문 삭제
 
 class UpdateOrderView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     
     def patch(self, request, order_id):
         order = get_object_or_404(Order, id=order_id)
-        if order.customer != request.user:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-        
         data = request.data
         serializer = OrderSerializer(order, data=data, partial=True)
         if serializer.is_valid():
