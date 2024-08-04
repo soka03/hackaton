@@ -9,6 +9,7 @@ class Order(models.Model):
     body = models.TextField(default='')
     pickup_time = models.TextField(default='')
     order_date = models.DateTimeField(auto_now_add=True)
+    progress = models.TextField(default = 'waiting')
 
 
 class Review(models.Model):
