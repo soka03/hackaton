@@ -56,6 +56,24 @@ class DeleteOrderView(APIView): #주문 삭제
             return Response(status=status.HTTP_403_FORBIDDEN)
         order.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+class UpdateOrderView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+    
+    def patch(self, request, order_id):
+        order = get_object_or_404(Order, id=order_id)
+        if order.customer != request.user:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        
+        data = request.data
+        serializer = OrderSerializer(order, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 """
 @api_view(['GET'])
 def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
