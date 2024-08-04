@@ -37,7 +37,7 @@ class PostSearchSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'user', 'nickname', 'city', 'district', 'dong', 'detail_location', 'created_at']
+        fields = ['id', 'user', 'nickname', 'city', 'district', 'dong', 'detail_location', 'created_at', 'image']
 
     def get_created_at(self, obj):
         time = timezone.localtime(obj.created_at)

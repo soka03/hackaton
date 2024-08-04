@@ -74,6 +74,20 @@ class UpdateOrderView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class GetOrdersByUser(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        print(f"Authenticated user: {user}")  # 추가된 디버깅 코드
+
+        orders = Order.objects.filter(customer=user)
+        print(f"Orders: {orders}")  # 추가된 디버깅 코드
+
+        serializer = OrderSerializer(orders, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 """
 @api_view(['GET'])
 def get_boards_by_location(request, dong): #지역별 판매글 목록 조회
